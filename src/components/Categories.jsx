@@ -7,7 +7,7 @@ const categoriesNames = [
   'Гриль',
   'Острые',
   'Закрытые',
-]
+];
 
 function Categories() {
 
@@ -22,7 +22,7 @@ function Categories() {
       <ul>
         {
           categoriesNames.map( (value, index) => (
-            (<li onClick={() => setCategory(index)} className={activeCategory === index ? "active" : ''}>{value}</li>)
+            (<li key={index} onClick={() => setCategory(index)} className={activeCategory === index ? "active" : ''}>{value}</li>)
           ))
         }
       </ul>
