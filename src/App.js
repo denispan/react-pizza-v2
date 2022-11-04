@@ -7,21 +7,25 @@ import PizzaBlock from './components/PizzaBlock';
 
 import './scss/app.scss';
 
+import pizzas from './assets/pizzas.json'
 
 function App() {
   return (
     <div className="wrapper">
       <Header />
-      <div className="content">
+       <div className="content">
         <div className="container">
           <div className="content__top">
-            <Categories />
+            {/*<Categories />*/}
             <Sort />
           </div>
           <h2 className="content__title">Все пиццы</h2>
           <div className="content__items">
-            <PizzaBlock title="Бургер-пицца" price={395} />
-            <PizzaBlock title="Мексиканская" price={500} />
+            {
+              pizzas.map(obj => (
+                <PizzaBlock key={obj.id} {... obj}/>
+              ))
+            }
           </div>
         </div>
       </div>
