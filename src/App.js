@@ -7,23 +7,36 @@ import PizzaBlock from './components/PizzaBlock';
 
 import './scss/app.scss';
 
-import pizzas from './assets/pizzas.json'
-
 function App() {
+
+  const [items, setItems] = React.useState([]);
+
+  React.useEffect(() => {
+    fetch('https://6364ea7ef711cb49d1efed68.mockapi.io/pizzas')
+      .then((response) => {
+        return response.json();
+      })
+      .then((jsonRes) => {
+        setItems(jsonRes);
+      })
+  }, [])
+
+
+
   return (
     <div className="wrapper">
-      <Header />
-       <div className="content">
+      <Header/>
+      <div className="content">
         <div className="container">
           <div className="content__top">
-            {/*<Categories />*/}
-            <Sort />
+            <Categories/>
+            <Sort/>
           </div>
           <h2 className="content__title">Все пиццы</h2>
           <div className="content__items">
             {
-              pizzas.map(obj => (
-                <PizzaBlock key={obj.id} {... obj}/>
+              items.map(obj => (
+                <PizzaBlock key={obj.id} {...obj}/>
               ))
             }
           </div>
