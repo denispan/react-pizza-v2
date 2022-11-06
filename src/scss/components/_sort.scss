@@ -19,6 +19,25 @@
       border-bottom: 1px dashed $orange;
       cursor: pointer;
     }
+
+    @media (max-width: 1310px) {
+      b {
+        display: none;
+      }
+    }
+
+    @media (max-width: 1155px) {
+      b {
+        display: inline;
+      }
+    }
+
+
+    @media (max-width: 400px) {
+      b {
+        display: none;
+      }
+    }
   }
 
   &__popup {

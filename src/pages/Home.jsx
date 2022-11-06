@@ -18,11 +18,12 @@ function Home() {
       .then((jsonRes) => {
         setItems(jsonRes);
         setIsLoad(true);
-      })
+      });
+    window.scrollTo(0, 0);
   }, []);
 
   return (
-    <>
+    <div className="container">
       <div className="content__top">
         <Categories/>
         <Sort/>
@@ -38,8 +39,8 @@ function Home() {
               <Skeleton key={i}/>
             ))
         }
-      </div>
-    </>
+        </div>
+    </div>
   )
 }
 
