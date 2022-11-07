@@ -1,4 +1,4 @@
-import React, {useState} from "react";
+import React from "react";
 
 const categoriesNames = [
   'Все',
@@ -9,20 +9,14 @@ const categoriesNames = [
   'Закрытые',
 ];
 
-function Categories() {
-
-  const [activeCategory, setActiveCategory ] = useState(0);
-
-  function setCategory(index) {
-    setActiveCategory(index);
-  }
+function Categories({categoryId, onChangeCategory}) {
 
   return (
     <div className="categories">
       <ul>
         {
           categoriesNames.map( (value, index) => (
-            (<li key={index} onClick={() => setCategory(index)} className={activeCategory === index ? "active" : ''}>{value}</li>)
+            (<li key={index} onClick={() => onChangeCategory(index)} className={categoryId === index ? "active" : ''}>{value}</li>)
           ))
         }
       </ul>
