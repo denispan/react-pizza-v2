@@ -1,0 +1,48 @@
+.searchForm {
+  position: relative;
+
+  &__input {
+    max-width: 400px;
+    font-size: 16px;
+    padding: 14px 40px 14px 37px;
+    border: 1px solid rgba(0, 0, 0, 0.3);
+    border-radius: 15px;
+
+    &:focus {
+      border-color: rgba(0, 0, 0, 0.8);
+    }
+
+    &:focus + .searchForm__icon {
+      opacity: 0.8;
+    }
+  }
+
+  &__icon {
+    position: absolute;
+    width: 25px;
+    height: 25px;
+    top: 12px;
+    left: 8px;
+    opacity: 0.3;
+  }
+
+  &__button {
+    position: absolute;
+    border: none;
+    background-color: transparent;
+    top: 12px;
+    right: 13px;
+    cursor: pointer;
+
+
+    svg {
+      width: 25px;
+      height: 25px;
+      opacity: 0.3;
+
+      &:hover {
+        opacity: 0.8;
+      }
+    }
+  }
+}

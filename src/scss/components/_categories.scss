@@ -1,7 +1,7 @@
 @import '../variables';
 
 .categories {
-  margin-right: 10px;
+  margin-right: 30px;
 
   @media (max-width: 1155px) {
     margin-right: 0;
@@ -12,7 +12,7 @@
     display: flex;
     gap: 10px;
     flex-wrap: wrap;
-    justify-content: space-around;
+    justify-content: flex-start;
 
     li {
       background-color: #f9f9f9;
