@@ -6,9 +6,14 @@ import PizzaBlock from "../components/PizzaBlock";
 import Skeleton from "../components/PizzaBlock/Skeleton";
 import Pagination from "../components/Pagination";
 
+import { useSelector, useDispatch } from 'react-redux'
+import { decrement, increment } from '../redux/slices/filterSlice'
+
 import {SearchContext} from "../App";
 
 function Home() {
+  const count = useSelector((state) => state.counter.count)
+  const dispatch = useDispatch()
 
   const {searchValue} = React.useContext(SearchContext);
 
@@ -52,17 +57,19 @@ function Home() {
 
   return (
     <div className="container">
-      <div className="content__top">
-        <Categories categoryId={categoryId} onChangeCategory={(id) => setCategoryId(id)}/>
-        <Sort sortType={sortType} onChangeSort={(obj) => setSortType(obj)} sortOrder={sortOrder} onChangeSortOrder={(order) => setSortOrder(order)}/>
-      </div>
-      <h2 className="content__title">Все пиццы</h2>
-      <div className="content__items">
-        {
-          isLoad ? pizzas : skeletons
-        }
-      </div>
-      <Pagination onChangePage={(page) => setCurrentPage(page)}/>
+      <button
+        aria-label="Increment value"
+        onClick={() => dispatch(increment())}
+      >
+        Increment
+      </button>
+      <span>{count}</span>
+      <button
+        aria-label="Decrement value"
+        onClick={() => dispatch(decrement())}
+      >
+        Decrement
+      </button>
     </div>
   )
 }
