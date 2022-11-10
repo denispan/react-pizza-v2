@@ -1,6 +1,7 @@
-import React, {useState} from "react";
+import React from "react";
 
-import {useSelector} from "react-redux";
+import {useSelector, useDispatch} from "react-redux";
+import {setCurrentPage} from "../redux/slices/filterSlice";
 
 import axios from "axios";
 
@@ -12,18 +13,22 @@ import Pagination from "../components/Pagination";
 
 import {SearchContext} from "../App";
 
-
 const skeletonArray = [...new Array(6)];
 
 function Home() {
 
-  const {categoryId, sort, order}  = useSelector((store) => store.filterSlice);
+  const dispatch = useDispatch();
+
+  const {categoryId, sort, order, currentPage} = useSelector((store) => store.filterSlice);
 
   const {searchValue} = React.useContext(SearchContext);
 
+  const onChangeCurrentPage = (page) => {
+    dispatch(setCurrentPage(page));
+  }
+
   const [items, setItems] = React.useState([]);
   const [isLoad, setIsLoad] = React.useState(false);
-  const [currentPage, setCurrentPage] = useState(1);
 
   //desc - по убыванию
   //asc - по возратсанию
@@ -36,14 +41,14 @@ function Home() {
   React.useEffect(() => {
     setIsLoad(false);
 
-    fetch(`https://6364ea7ef711cb49d1efed68.mockapi.io/pizzas?page=${currentPage}&limit=4&${filterByCategory}${searchBySortProperty}&order=${order}`)
-      .then((response) => {
-        return response.json();
-      })
-      .then((jsonRes) => {
-        setItems(jsonRes);
-        setIsLoad(true);
-      });
+    // fetch(`https://6364ea7ef711cb49d1efed68.mockapi.io/pizzas?page=${currentPage}&limit=4&${filterByCategory}${searchBySortProperty}&order=${order}`)
+    //   .then((response) => {
+    //     return response.json();
+    //   })
+    //   .then((jsonRes) => {
+    //     setItems(jsonRes);
+    //     setIsLoad(true);
+    //   });
 
     axios
       .get(`https://6364ea7ef711cb49d1efed68.mockapi.io/pizzas?page=${currentPage}&limit=4&${filterByCategory}${searchBySortProperty}&order=${order}`)
@@ -53,7 +58,7 @@ function Home() {
       });
 
     window.scrollTo(0, 0);
-  }, [categoryId, sort, order, currentPage ]);
+  }, [categoryId, sort, order, currentPage]);
 
   const pizzas = items.filter((obj) =>
     obj.title.toLowerCase().includes(searchValue.toLowerCase())
@@ -65,7 +70,7 @@ function Home() {
     <div className="container">
       <div className="content__top">
         <Categories/>
-        <Sort />
+        <Sort/>
       </div>
       <h2 className="content__title">Все пиццы</h2>
       <div className="content__items">
@@ -73,7 +78,7 @@ function Home() {
           isLoad ? pizzas : skeletons
         }
       </div>
-      <Pagination onChangePage={(page) => setCurrentPage(page)}/>
+      <Pagination onChangePage={onChangeCurrentPage}/>
     </div>
   )
 }
