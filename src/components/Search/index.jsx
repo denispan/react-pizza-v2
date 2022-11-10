@@ -1,22 +1,38 @@
 import React from "react";
 
+import debounce from "lodash.debounce";
+
 import styles from "./Search.module.scss";
+
 import {SearchContext} from "../../App";
 
 function Search() {
 
+  const [searchValueLocal, setSearchValueLocal] = React.useState('');
+
   const inputSearchRef = React.useRef();
 
-  const {searchValue, setSearchValue} = React.useContext(SearchContext);
+  const {setSearchValue} = React.useContext(SearchContext);
 
   const onClearInput = () => {
     setSearchValue('');
+    setSearchValueLocal('');
     inputSearchRef.current.focus();
+  }
+
+  const updateSearchRequest = React.useCallback(
+    debounce(
+    (str) => {setSearchValue(str)}, 500),
+    []);
+
+  const onChangeInputValue = (str) => {
+    setSearchValueLocal(str);
+    updateSearchRequest(str);
   }
 
   return (
     <form className={styles.searchForm}>
-      <input ref={inputSearchRef} onChange={(evt => setSearchValue(evt.target.value))} className={styles.searchForm__input} placeholder='Поиск пицц...' value={searchValue}/>
+      <input ref={inputSearchRef} onChange={(evt => onChangeInputValue(evt.target.value))} className={styles.searchForm__input} placeholder='Поиск пицц...' value={searchValueLocal}/>
       <svg className={styles.searchForm__icon} enableBackground="new 0 0 32 32" id="Editable-line" version="1.1"
            viewBox="0 0 32 32"
            xmlns="http://www.w3.org/2000/svg">
@@ -26,7 +42,7 @@ function Search() {
               strokeMiterlimit="10" strokeWidth="2" x1="27" x2="20.366" y1="27" y2="20.366"/>
       </svg>
       {
-        searchValue &&
+        searchValueLocal &&
         <button onClick={onClearInput} className={styles.searchForm__button} type="button">
           <svg fill="none" height="24" viewBox="0 0 24 24" width="24" xmlns="http://www.w3.org/2000/svg">
             <path

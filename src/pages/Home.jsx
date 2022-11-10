@@ -36,14 +36,14 @@ function Home() {
   React.useEffect(() => {
     setIsLoad(false);
 
-    // fetch(`https://6364ea7ef711cb49d1efed68.mockapi.io/pizzas?page=${currentPage}&limit=4&${filterByCategory}${searchBySortProperty}&order=${order}`)
-    //   .then((response) => {
-    //     return response.json();
-    //   })
-    //   .then((jsonRes) => {
-    //     setItems(jsonRes);
-    //     setIsLoad(true);
-    //   });
+    fetch(`https://6364ea7ef711cb49d1efed68.mockapi.io/pizzas?page=${currentPage}&limit=4&${filterByCategory}${searchBySortProperty}&order=${order}`)
+      .then((response) => {
+        return response.json();
+      })
+      .then((jsonRes) => {
+        setItems(jsonRes);
+        setIsLoad(true);
+      });
 
     axios
       .get(`https://6364ea7ef711cb49d1efed68.mockapi.io/pizzas?page=${currentPage}&limit=4&${filterByCategory}${searchBySortProperty}&order=${order}`)
