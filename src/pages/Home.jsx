@@ -2,6 +2,8 @@ import React, {useState} from "react";
 
 import {useSelector} from "react-redux";
 
+import axios from "axios";
+
 import Categories from "../components/Categories";
 import Sort from "../components/Sort";
 import PizzaBlock from "../components/PizzaBlock";
@@ -33,14 +35,23 @@ function Home() {
 
   React.useEffect(() => {
     setIsLoad(false);
-    fetch(`https://6364ea7ef711cb49d1efed68.mockapi.io/pizzas?page=${currentPage}&limit=4&${filterByCategory}${searchBySortProperty}&order=${order}`)
+
+    // fetch(`https://6364ea7ef711cb49d1efed68.mockapi.io/pizzas?page=${currentPage}&limit=4&${filterByCategory}${searchBySortProperty}&order=${order}`)
+    //   .then((response) => {
+    //     return response.json();
+    //   })
+    //   .then((jsonRes) => {
+    //     setItems(jsonRes);
+    //     setIsLoad(true);
+    //   });
+
+    axios
+      .get(`https://6364ea7ef711cb49d1efed68.mockapi.io/pizzas?page=${currentPage}&limit=4&${filterByCategory}${searchBySortProperty}&order=${order}`)
       .then((response) => {
-        return response.json();
-      })
-      .then((jsonRes) => {
-        setItems(jsonRes);
+        setItems(response.data);
         setIsLoad(true);
       });
+
     window.scrollTo(0, 0);
   }, [categoryId, sort, order, currentPage ]);
 
