@@ -13,6 +13,8 @@ function Sort() {
   const dispatch = useDispatch();
   const {sort, order} = useSelector(state => state.filterSlice)
 
+  const searchRef = React.useRef();
+
   const [isOpen, setIsOpen] = React.useState(false);
 
 
@@ -24,8 +26,22 @@ function Sort() {
   //desc - по убыванию
   //asc - по возратсанию
 
+  // Закрытие попапа по клику вне попапа
+  // используем обращение к бади через документ тк мы не может через useRef получить ссылку на бади. приходится через документ
+  React.useEffect(() => {
+    const onClickOutside = event => {
+      if (!event.path.includes(searchRef.current)) {
+        setIsOpen(false);
+      }
+    };
+
+    document.body.addEventListener('click', onClickOutside);
+
+    return () => document.body.removeEventListener('click', onClickOutside);
+  }, [])
+
   return (
-    <div className="sort">
+    <div ref={searchRef} className="sort">
       <div className="sort__label">
         <button onClick={() => dispatch(setOrder(order === 'desc' ? 'asc' : 'desc'))}>
           <svg className={`sort__icon ${order === 'desc'? 'sort__icon--desc' : ''}`} width="10" height="6" viewBox="0 0 10 6" fill="none"

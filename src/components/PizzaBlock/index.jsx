@@ -1,10 +1,29 @@
 import React, {useState} from "react";
+import {useSelector, useDispatch} from "react-redux";
+import {addItem} from "../../redux/slices/cartSlice";
 
-function Index({title, price, imageUrl, sizes, types}) {
+const pizzaTypes = ['тонкое', 'традиционное'];
+
+function Index({id, title, price, imageUrl, sizes, types}) {
+  const dispatch = useDispatch();
+  const cartItems= useSelector(state => state.cartSlice.items.find((obj) => obj.id == id));
   const [activeSize, setActiveSize] = useState(0);
   const [activeType, setActiveType] = useState(0);
 
-  const pizzaTypes = ['тонкое', 'традиционное']
+  const addedCount = cartItems ? cartItems.count : 0;
+
+
+  const onClickAdd = () => {
+    const item ={
+      id,
+      title,
+      price,
+      imageUrl,
+      size: sizes[activeSize],
+      type: pizzaTypes[activeType],
+    };
+    dispatch(addItem(item));
+  }
 
   return (
     <div className="pizza-block-wrapper">
@@ -35,7 +54,7 @@ function Index({title, price, imageUrl, sizes, types}) {
         </div>
         <div className="pizza-block__bottom">
           <div className="pizza-block__price">от {price}&nbsp;₽</div>
-          <button className="button button--outline button--add">
+          <button onClick={onClickAdd} className="button button--outline button--add">
             <svg width="12" height="12" viewBox="0 0 12 12" fill="none"
                  xmlns="http://www.w3.org/2000/svg">
               <path
@@ -43,7 +62,7 @@ function Index({title, price, imageUrl, sizes, types}) {
                 fill="white"></path>
             </svg>
             <span>Добавить</span>
-            <i>0</i>
+            {addedCount > 0 && <i>{addedCount}</i>}
           </button>
         </div>
       </div>

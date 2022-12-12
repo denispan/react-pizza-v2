@@ -83,11 +83,8 @@ function Home() {
   React.useEffect(() => {
     if (window.location.search) {
       const params = qs.parse(window.location.search.substring(1));
-      console.log(params)
 
       const sort = sortList.find(obj => obj.sortProperty === params.sort);
-
-      // console.log(sort);
 
       dispatch(
         setFilters({
