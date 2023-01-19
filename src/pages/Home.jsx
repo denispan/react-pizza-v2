@@ -3,9 +3,10 @@ import React from "react";
 import {useSelector, useDispatch} from "react-redux";
 import {setCurrentPage, setFilters} from "../redux/slices/filterSlice";
 
+import {fetchPizzas} from "../redux/slices/pizzasSlice";
+
 import {useNavigate} from "react-router-dom";
 
-import axios from "axios";
 import qs from "qs";
 
 import Categories from "../components/Categories";
@@ -25,6 +26,8 @@ function Home() {
   const isSearch = React.useRef(false);
   const isMounted = React.useRef(false);
 
+  const {items, status} = useSelector((store) => store.pizzasSlice);
+
   const {categoryId, sort, order, currentPage} = useSelector((store) => store.filterSlice);
 
   const {searchValue} = React.useContext(SearchContext);
@@ -33,35 +36,23 @@ function Home() {
     dispatch(setCurrentPage(page));
   }
 
-  const [items, setItems] = React.useState([]);
-  const [isLoad, setIsLoad] = React.useState(false);
+  //const [isLoad, setIsLoad] = React.useState(false);
 
   //desc - по убыванию
   //asc - по возратсанию
 
-
   const filterByCategory = categoryId ? `category=${categoryId}` : '';
   const searchBySortProperty = categoryId ? `&sortBy=${sort.sortProperty}` : `sortBy=${sort.sortProperty}`;
 
-  const fetchPizzas = () => {
-    setIsLoad(false);
-
-    // fetch(`https://6364ea7ef711cb49d1efed68.mockapi.io/pizzas?page=${currentPage}&limit=4&${filterByCategory}${searchBySortProperty}&order=${order}`)
-    //   .then((response) => {
-    //     return response.json();
-    //   })
-    //   .then((jsonRes) => {
-    //     setItems(jsonRes);
-    //     setIsLoad(true);
-    //   });
-
-    axios
-      .get(`https://6364ea7ef711cb49d1efed68.mockapi.io/pizzas?page=${currentPage}&limit=4&${filterByCategory}${searchBySortProperty}&order=${order}`)
-      .then((response) => {
-        setItems(response.data);
-        setIsLoad(true);
-      });
+  const getPizzas = async () => {
+    dispatch(fetchPizzas({
+      currentPage,
+      filterByCategory,
+      searchBySortProperty,
+      order
+    }));
   };
+
 
   //при первом рендере не вшиваем параметры в адресную строку. если параметры изменились то
   React.useEffect(() => {
@@ -101,12 +92,11 @@ function Home() {
   React.useEffect(() => {
     window.scrollTo(0, 0);
     if (!isSearch.current) {
-      fetchPizzas();
+      getPizzas();
     }
 
     isSearch.current = false;
   }, [categoryId, sort, order, currentPage]);
-
   const pizzas = items.filter((obj) =>
     obj.title.toLowerCase().includes(searchValue.toLowerCase())
   ).map((obj) => (<PizzaBlock key={obj.id} {...obj} />));
@@ -122,7 +112,7 @@ function Home() {
       <h2 className="content__title">Все пиццы</h2>
       <div className="content__items">
         {
-          isLoad ? pizzas : skeletons
+          status === 'loading' ? pizzas : skeletons
         }
       </div>
       <Pagination onChangePage={onChangeCurrentPage}/>
