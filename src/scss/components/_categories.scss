@@ -1,14 +1,23 @@
 @import '../variables';
 
 .categories {
+  margin-right: 30px;
+
+  @media (max-width: 1155px) {
+    margin-right: 0;
+    margin-bottom: 20px;
+  }
+
   ul {
     display: flex;
+    gap: 10px;
+    flex-wrap: wrap;
+    justify-content: flex-start;
 
     li {
       background-color: #f9f9f9;
       padding: 13px 30px;
       border-radius: 30px;
-      margin-right: 10px;
       font-weight: bold;
       cursor: pointer;
       transition: background-color 0.1s ease-in-out;

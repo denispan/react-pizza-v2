@@ -12,6 +12,12 @@
   border: 1px solid transparent;
   @include noselect();
 
+  @media (max-width: 370px) {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+  }
+
   &,
   span {
     color: #fff;
@@ -22,6 +28,10 @@
   path,
   svg {
     transition: all $duration ease-in-out;
+
+    @media (max-width: 370px) {
+      margin: 0 auto;
+    }
   }
 
   &:hover {
@@ -98,6 +108,9 @@
   &--add {
     svg {
       margin-right: 2px;
+      @media (max-width: 370px) {
+        margin: 0 auto;
+      }
     }
 
     span {
@@ -126,6 +139,11 @@
       position: relative;
       top: -1px;
       left: 3px;
+
+      @media (max-width: 370px) {
+        top: auto;
+        left: auto;
+      }
     }
   }
 
