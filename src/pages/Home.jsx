@@ -53,7 +53,6 @@ function Home() {
     }));
   };
 
-
   //при первом рендере не вшиваем параметры в адресную строку. если параметры изменились то
   React.useEffect(() => {
     if (isMounted.current) {
@@ -97,9 +96,12 @@ function Home() {
 
     isSearch.current = false;
   }, [categoryId, sort, order, currentPage]);
+
   const pizzas = items.filter((obj) =>
     obj.title.toLowerCase().includes(searchValue.toLowerCase())
   ).map((obj) => (<PizzaBlock key={obj.id} {...obj} />));
+
+  console.log(pizzas);
 
   const skeletons = skeletonArray.map((_, i) => (<Skeleton key={i}/>));
 
