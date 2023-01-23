@@ -30,7 +30,7 @@ function Sort() {
   // используем обращение к бади через документ тк мы не может через useRef получить ссылку на бади. приходится через документ
   React.useEffect(() => {
     const onClickOutside = event => {
-      if (!event.path.includes(searchRef.current)) {
+      if (event.target.parentElement.offsetParent != searchRef.current) {
         setIsOpen(false);
       }
     };

@@ -41,14 +41,11 @@ function Home() {
   //desc - по убыванию
   //asc - по возратсанию
 
-  const filterByCategory = categoryId ? `category=${categoryId}` : '';
-  const searchBySortProperty = categoryId ? `&sortBy=${sort.sortProperty}` : `sortBy=${sort.sortProperty}`;
-
   const getPizzas = async () => {
     dispatch(fetchPizzas({
       currentPage,
-      filterByCategory,
-      searchBySortProperty,
+      categoryId,
+      sort,
       order
     }));
   };
@@ -92,6 +89,7 @@ function Home() {
     window.scrollTo(0, 0);
     if (!isSearch.current) {
       getPizzas();
+      console.log(items);
     }
 
     isSearch.current = false;
@@ -100,8 +98,6 @@ function Home() {
   const pizzas = items.filter((obj) =>
     obj.title.toLowerCase().includes(searchValue.toLowerCase())
   ).map((obj) => (<PizzaBlock key={obj.id} {...obj} />));
-
-  console.log(pizzas);
 
   const skeletons = skeletonArray.map((_, i) => (<Skeleton key={i}/>));
 
@@ -112,11 +108,16 @@ function Home() {
         <Sort/>
       </div>
       <h2 className="content__title">Все пиццы</h2>
-      <div className="content__items">
-        {
-          status === 'loading' ? pizzas : skeletons
-        }
-      </div>
+      { status === "error" ?
+        <div className="content__error">
+          <h2>Произошла ошибка 😕</h2>
+          <p>К сожалению, не удалось загрузить пиццы. Попробуйте повторить загрузку позже</p>
+        </div>
+        :
+        <div className="content__items">
+          { status === 'success' ? pizzas : skeletons }
+        </div>
+      }
       <Pagination onChangePage={onChangeCurrentPage}/>
     </div>
   )
