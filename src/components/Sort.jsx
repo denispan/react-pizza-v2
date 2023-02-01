@@ -11,7 +11,7 @@ export const sortList = [
 function Sort() {
 
   const dispatch = useDispatch();
-  const {sort, order} = useSelector(state => state.filterSlice)
+  const {sort, order} = useSelector((state) => state.filterSlice)
 
   const searchRef = React.useRef();
 
