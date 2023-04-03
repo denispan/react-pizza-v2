@@ -28,6 +28,17 @@ body {
     }
   }
 
+  &__error {
+    max-width: 400px;
+    text-align: center;
+    margin: 0 auto;
+    padding: 100px 0 200px;
+
+    h2 {
+      margin-bottom: 20px;
+    }
+  }
+
   &__items {
     display: grid;
     grid-template-columns: repeat(4, 1fr);

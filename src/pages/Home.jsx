@@ -1,9 +1,9 @@
 import React from "react";
 
 import {useSelector, useDispatch} from "react-redux";
-import {setCurrentPage, setFilters} from "../redux/slices/filterSlice";
+import {selectFilterData, setCurrentPage, setFilters} from "../redux/slices/filterSlice";
 
-import {fetchPizzas} from "../redux/slices/pizzasSlice";
+import {fetchPizzas, selectPizzasSlice} from "../redux/slices/pizzasSlice";
 
 import {useNavigate} from "react-router-dom";
 
@@ -15,8 +15,6 @@ import PizzaBlock from "../components/PizzaBlock";
 import Skeleton from "../components/PizzaBlock/Skeleton";
 import Pagination from "../components/Pagination";
 
-import {SearchContext} from "../App";
-
 const skeletonArray = [...new Array(6)];
 
 function Home() {
@@ -26,29 +24,23 @@ function Home() {
   const isSearch = React.useRef(false);
   const isMounted = React.useRef(false);
 
-  const {items, status} = useSelector((store) => store.pizzasSlice);
+  const {items, status} = useSelector(selectPizzasSlice);
 
-  const {categoryId, sort, order, currentPage} = useSelector((store) => store.filterSlice);
-
-  const {searchValue} = React.useContext(SearchContext);
+  const {categoryId, sort, order, currentPage, searchValue} = useSelector(selectFilterData);
 
   const onChangeCurrentPage = (page) => {
     dispatch(setCurrentPage(page));
   }
 
-  //const [isLoad, setIsLoad] = React.useState(false);
 
   //desc - по убыванию
   //asc - по возратсанию
 
-  const filterByCategory = categoryId ? `category=${categoryId}` : '';
-  const searchBySortProperty = categoryId ? `&sortBy=${sort.sortProperty}` : `sortBy=${sort.sortProperty}`;
-
   const getPizzas = async () => {
     dispatch(fetchPizzas({
       currentPage,
-      filterByCategory,
-      searchBySortProperty,
+      categoryId,
+      sort,
       order
     }));
   };
@@ -101,8 +93,6 @@ function Home() {
     obj.title.toLowerCase().includes(searchValue.toLowerCase())
   ).map((obj) => (<PizzaBlock key={obj.id} {...obj} />));
 
-  console.log(pizzas);
-
   const skeletons = skeletonArray.map((_, i) => (<Skeleton key={i}/>));
 
   return (
@@ -112,11 +102,16 @@ function Home() {
         <Sort/>
       </div>
       <h2 className="content__title">Все пиццы</h2>
-      <div className="content__items">
-        {
-          status === 'loading' ? pizzas : skeletons
-        }
-      </div>
+      { status === "error" ?
+        <div className="content__error">
+          <h2>Произошла ошибка 😕</h2>
+          <p>К сожалению, не удалось загрузить пиццы. Попробуйте повторить загрузку позже</p>
+        </div>
+        :
+        <div className="content__items">
+          { status === 'success' ? pizzas : skeletons }
+        </div>
+      }
       <Pagination onChangePage={onChangeCurrentPage}/>
     </div>
   )

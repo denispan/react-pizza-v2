@@ -11,7 +11,7 @@ export const sortList = [
 function Sort() {
 
   const dispatch = useDispatch();
-  const {sort, order} = useSelector(state => state.filterSlice)
+  const {sort, order} = useSelector((state) => state.filterSlice)
 
   const searchRef = React.useRef();
 
@@ -30,7 +30,7 @@ function Sort() {
   // используем обращение к бади через документ тк мы не может через useRef получить ссылку на бади. приходится через документ
   React.useEffect(() => {
     const onClickOutside = event => {
-      if (!event.path.includes(searchRef.current)) {
+      if (event.target.parentElement.offsetParent != searchRef.current) {
         setIsOpen(false);
       }
     };
