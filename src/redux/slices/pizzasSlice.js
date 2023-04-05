@@ -8,9 +8,8 @@ export const fetchPizzas = createAsyncThunk(
     const filterByCategory = categoryId ? `category=${categoryId}` : '';
     const searchBySortProperty = categoryId ? `&sortBy=${sort.sortProperty}` : `sortBy=${sort.sortProperty}`;
 
-    const response = await axios.get(`https://6364ea7ef711cb49d1efed68.mockapi.io/pizzas?page=${currentPage}&limit=4&${filterByCategory}${searchBySortProperty}&order=${order}`)
+    const response = await axios.get(`https://6364ea7ef711cb49d1efed68.mockapi.io/pizzas?page=${currentPage}&limit=8&${filterByCategory}${searchBySortProperty}&order=${order}`)
 
-    console.log(thunkAPI.getState());
     return response.data;
   }
 )

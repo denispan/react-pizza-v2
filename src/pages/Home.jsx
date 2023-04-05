@@ -5,7 +5,7 @@ import {selectFilterData, setCurrentPage, setFilters} from "../redux/slices/filt
 
 import {fetchPizzas, selectPizzasSlice} from "../redux/slices/pizzasSlice";
 
-import {useNavigate} from "react-router-dom";
+import {Link, useNavigate} from 'react-router-dom';
 
 import qs from "qs";
 
@@ -15,7 +15,7 @@ import PizzaBlock from "../components/PizzaBlock";
 import Skeleton from "../components/PizzaBlock/Skeleton";
 import Pagination from "../components/Pagination";
 
-const skeletonArray = [...new Array(6)];
+const skeletonArray = [...new Array(4)];
 
 function Home() {
 
@@ -91,7 +91,9 @@ function Home() {
 
   const pizzas = items.filter((obj) =>
     obj.title.toLowerCase().includes(searchValue.toLowerCase())
-  ).map((obj) => (<PizzaBlock key={obj.id} {...obj} />));
+  ).map((obj) => (
+    <PizzaBlock key={obj.id} {...obj} />
+  ));
 
   const skeletons = skeletonArray.map((_, i) => (<Skeleton key={i}/>));
 
