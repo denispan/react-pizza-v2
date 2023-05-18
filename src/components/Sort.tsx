@@ -1,8 +1,14 @@
 import React from "react";
 import { useSelector, useDispatch } from "react-redux";
-import { setSort, setOrder } from "../redux/slices/filterSlice";
+import {setSort, setOrder, selectFilterData} from '../redux/slices/filterSlice';
 
-export const sortList = [
+
+type SortItem = {
+  sortName: string;
+  sortProperty: string;
+};
+
+export const sortList: SortItem[] = [
   {sortName: 'популярности', sortProperty: 'rating'},
   {sortName: 'цене', sortProperty: 'price'},
   {sortName: 'алфавиту', sortProperty: 'title'},
@@ -11,14 +17,14 @@ export const sortList = [
 function Sort() {
 
   const dispatch = useDispatch();
-  const {sort, order} = useSelector((state) => state.filterSlice)
+  const {sort, order} = useSelector(selectFilterData)
 
-  const searchRef = React.useRef();
+  const searchRef = React.useRef<HTMLDivElement>(null);
 
   const [isOpen, setIsOpen] = React.useState(false);
 
 
-  const onClickSortItem = (obj) => {
+  const onClickSortItem = (obj: SortItem) => {
     dispatch(setSort(obj));
     setIsOpen(false);
   };
@@ -29,7 +35,7 @@ function Sort() {
   // Закрытие попапа по клику вне попапа
   // используем обращение к бади через документ тк мы не может через useRef получить ссылку на бади. приходится через документ
   React.useEffect(() => {
-    const onClickOutside = event => {
+    const onClickOutside = (event: any) => {
       if (event.target.parentElement.offsetParent != searchRef.current) {
         setIsOpen(false);
       }

@@ -17,7 +17,7 @@ import Pagination from "../components/Pagination";
 
 const skeletonArray = [...new Array(4)];
 
-function Home() {
+const Home: React.FC = () => {
 
   const navigate = useNavigate();
   const dispatch = useDispatch();
@@ -28,7 +28,7 @@ function Home() {
 
   const {categoryId, sort, order, currentPage, searchValue} = useSelector(selectFilterData);
 
-  const onChangeCurrentPage = (page) => {
+  const onChangeCurrentPage = (page: number) => {
     dispatch(setCurrentPage(page));
   }
 
@@ -37,6 +37,7 @@ function Home() {
   //asc - по возратсанию
 
   const getPizzas = async () => {
+    //@ts-ignore
     dispatch(fetchPizzas({
       currentPage,
       categoryId,
@@ -89,9 +90,9 @@ function Home() {
     isSearch.current = false;
   }, [categoryId, sort, order, currentPage]);
 
-  const pizzas = items.filter((obj) =>
+  const pizzas = items.filter((obj: any) =>
     obj.title.toLowerCase().includes(searchValue.toLowerCase())
-  ).map((obj) => (
+  ).map((obj: any) => (
     <PizzaBlock key={obj.id} {...obj} />
   ));
 

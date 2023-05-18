@@ -2,16 +2,31 @@ import React, {useState} from "react";
 import {useSelector, useDispatch} from "react-redux";
 import {addItem} from "../../redux/slices/cartSlice";
 import {Link} from 'react-router-dom';
+import {RootState} from '../../redux/store';
 
 const pizzaTypes = ['тонкое', 'традиционное'];
 
-function Index({id, title, price, imageUrl, sizes, types}) {
+type IndexProps = {
+  id: string;
+  title: string;
+  price: number;
+  imageUrl: string;
+  sizes: number[];
+  types: number[];
+}
+
+type cartItemsType = {
+  count: any;
+}
+
+const Index: React.FC<IndexProps> = ({id, title, price, imageUrl, sizes, types}) => {
   const dispatch = useDispatch();
-  const cartItems= useSelector(state => state.cartSlice.items.find((obj) => obj.id == id));
+  const cartItems: cartItemsType | undefined = useSelector((state: RootState) => state.cartSlice.items.find((obj: {id: string}) => obj.id === id));
   const [activeSize, setActiveSize] = useState(0);
   const [activeType, setActiveType] = useState(0);
 
-  const addedCount = cartItems ? cartItems.count : 0;
+
+  // const addedCount = cartItems ? cartItems.count : 0;
 
 
   const onClickAdd = () => {
@@ -65,7 +80,7 @@ function Index({id, title, price, imageUrl, sizes, types}) {
                 fill="white"></path>
             </svg>
             <span>Добавить</span>
-            {addedCount > 0 && <i>{addedCount}</i>}
+            {/*{addedCount > 0 && <i>{addedCount}</i>}*/}
           </button>
         </div>
       </div>

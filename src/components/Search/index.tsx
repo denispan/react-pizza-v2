@@ -8,32 +8,37 @@ import styles from "./Search.module.scss";
 import {useDispatch} from 'react-redux';
 
 
-function Search() {
+const Search: React.FC = () => {
   const dispatch = useDispatch()
 
   const [searchValueLocal, setSearchValueLocal] = React.useState('');
 
-  const inputSearchRef = React.useRef();
+  const inputSearchRef = React.useRef<HTMLInputElement>(null);
 
   const onClearInput = () => {
     dispatch(setSearchValue(''));
     setSearchValueLocal('');
-    inputSearchRef.current.focus();
-  }
+    inputSearchRef.current?.focus();
+  };
 
   const updateSearchRequest = React.useCallback(
     debounce(
     (str) => {dispatch(setSearchValue(str));}, 500),
     []);
 
-  const onChangeInputValue = (str) => {
-    setSearchValueLocal(str);
-    updateSearchRequest(str);
-  }
+  const onChangeInputValue = (event: React.ChangeEvent<HTMLInputElement>) => {
+    setSearchValueLocal(event.target.value);
+    updateSearchRequest(event.target.value);
+  };
 
   return (
     <form className={styles.searchForm}>
-      <input ref={inputSearchRef} onChange={(evt => onChangeInputValue(evt.target.value))} className={styles.searchForm__input} placeholder='Поиск пицц...' value={searchValueLocal}/>
+      <input
+        ref={inputSearchRef}
+        onChange={(evt => onChangeInputValue(evt))}
+        className={styles.searchForm__input}
+        placeholder='Поиск пицц...' value={searchValueLocal}
+      />
       <svg className={styles.searchForm__icon} enableBackground="new 0 0 32 32" id="Editable-line" version="1.1"
            viewBox="0 0 32 32"
            xmlns="http://www.w3.org/2000/svg">
